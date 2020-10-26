@@ -1,0 +1,23 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: webpack
+  image: node
+  commands:
+    - npm install
+    - npm run publish
+
+- name: publish-container
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    dockerfile: Dockerfile
+    purge: true
+    pull_impage: true
+    repo: arminfriedl/snip
+    tags: latest
