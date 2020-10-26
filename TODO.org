@@ -1,0 +1,19 @@
+#+TODO: TODO NEXT HOLD | DONE CANCELLED
+
+* URL Shortener [22%]
+** DONE Landing Page Endpoint
+   CLOSED: [2020-10-25 Sun 04:50]
+** DONE Snip Endpoint
+   CLOSED: [2020-10-25 Sun 05:22]
+** TODO Shorten URL
+** TODO Save Shortened URLs
+** TODO Unsnip Shortened URLs
+** TODO Landing Page Template
+** TODO Rediret
+** TODO Stats Endpoint
+** TODO Store Stats
+** TODO Stats Template
+** TODO Externalize config
+** TODO Deploy script
+** TODO Improvement: Pronouncable short urls
+   with markov chain?

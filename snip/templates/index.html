@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Snip!</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    </head>
+
+    <body>
+        <form method="post" action="{{ url_for('submit_snip') }}">
+            {{ form.csrf_token }}
+            {{ form.url }}
+            <button type="submit">Snip!</button>
+        </form>
+        {% if form.url.errors %}
+        <ul class=errors>
+            {% for error in form.url.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </body>
+
+    <script src="{{ url_for('static', filename='dist/snip.bundle.js') }}"></script>
+</html>

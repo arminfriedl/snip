@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Snip!</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    </head>
+
+    <body>
+        <a href=" {{ url_for('snip_to', snip=snip) }}">test</a>
+    </body>
+
+    <script src="{{ url_for('static', filename='dist/snip.bundle.js') }}"></script>
+</html>
