@@ -6,10 +6,16 @@
         <meta charset="UTF-8">
         <title>Snip!</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     </head>
 
     <body>
-        <a href=" {{ url_for('snip_to', snip=snip) }}">test</a>
+        <div class="box box-h grab-h grab-v center">
+            <span>Here's your URL:</span>
+            <a href=" {{ url_for('snip_to', snip=snip) }}">{{ request.url_root }}{{ url_for('snip_to', snip=snip)[1:] }}</a>
+        </div>
     </body>
 
     <script src="{{ url_for('static', filename='dist/snip.bundle.js') }}"></script>

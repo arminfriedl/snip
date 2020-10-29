@@ -6,10 +6,10 @@ RUN apk update && apk add su-exec \
 COPY . /app
 WORKDIR /app
 
+RUN pipenv install
+
 ENV FLASK_APP=snip
 ENV FLASK_ENV=production
-
-RUN pipenv install
 
 EXPOSE 5000
 CMD ["pipenv", "run", "flask", "run", "--host=0.0.0.0"]

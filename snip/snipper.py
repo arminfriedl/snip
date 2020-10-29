@@ -1,5 +1,4 @@
 from . import db
-from .urlvalidator import URLValidator
 from .models import Snip
 
 import logging
@@ -10,9 +9,6 @@ log = logging.getLogger(__name__)
 
 
 def snip(url: str, reusable=False) -> str:
-    url_validator = URLValidator()
-    url_validator(url)
-
     if reusable:
         log.debug("Snipping is marked reusable. Looking for existing reusable snips.")
         reusable_snip = Snip.query.filter(Snip.url == url,

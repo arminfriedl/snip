@@ -6,8 +6,9 @@ https://github.com/django/django/blob/83fbaa92311dd96e330496a0e443ea71b9c183e2/d
 import re
 import ipaddress
 from urllib.parse import urlsplit, urlunsplit
+from wtforms.validators import ValidationError
 
-class UrlValidationError(Exception):
+class UrlValidationError(ValidationError):
     def __init__(self, message, code, params):
         self.message = message
         self.code = code
@@ -87,12 +88,25 @@ class URLValidator(RegexValidator):
     message = 'Enter a valid URL.'
     schemes = ['http', 'https', 'ftp', 'ftps']
 
-    def __init__(self, schemes=None, **kwargs):
+    def __init__(self, schemes=None, message=None, **kwargs):
         super().__init__(**kwargs)
         if schemes is not None:
             self.schemes = schemes
+        if message is not None:
+            self.message = message
 
-    def __call__(self, value):
+    def __call__(self, form, field):
+        if not field.raw_data or not field.raw_data[0]:
+            if self.message is None:
+                message = field.gettext('This field is required.')
+            else:
+                message = self.message
+
+            field.errors[:] = []
+            raise UrlValidationError(message, code=self.code, params=[])
+
+        value = field.raw_data[0] if field.raw_data else None
+
         if not isinstance(value, str):
             raise UrlValidationError(self.message, code=self.code, params={'value': value})
         # Check if the scheme is valid.

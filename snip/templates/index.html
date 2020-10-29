@@ -1,27 +1,36 @@
 <!DOCTYPE html>
-
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <title>Snip!</title>
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <title>Snip!</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
-    <body>
-        <form method="post" action="{{ url_for('submit_snip') }}">
-            {{ form.csrf_token }}
-            {{ form.url }}
-            <button type="submit">Snip!</button>
-        </form>
-        {% if form.url.errors %}
-        <ul class=errors>
-            {% for error in form.url.errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 
     <script src="{{ url_for('static', filename='dist/snip.bundle.js') }}"></script>
+</head>
+
+<body>
+    <div class="box box-h grab-h grab-v center">
+        <form method="post" action="{{ url_for('submit_snip') }}">
+            {{ form.csrf_token }}
+            <div id="snip-input" class="input-group {% if form.url.errors %}invalid{% endif %}">
+                {{ form.url }}
+                <button type="submit" class="input-group-append"><i class="fas fa-angle-right"></i></button>
+            </div>
+        </form>
+    </div>
+
+    {% if form.url.errors %}
+    <ul class=errors>
+        {% for error in form.url.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+
 </html>

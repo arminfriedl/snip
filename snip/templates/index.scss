@@ -1,0 +1,109 @@
+html, body{
+    height:100%;
+    height: 100vh;
+    margin:0;
+    padding:0
+}
+
+.errors {
+    list-style: none;
+    font-size: smaller;
+    color: grey;
+    padding: 0;
+}
+
+.box {
+    display: flex;
+    &-v { flex-direction: row; }
+    &-h { flex-direction: column; }
+
+    &.center {
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.grab {
+    &-h {min-height: 100%;}
+    &-v {width: 100%;}
+}
+
+.input-group {
+    display: flex;
+    align-items: stretch;
+    border: solid 1px;
+    border-color: rgb(224, 224, 224);
+    border-radius: 5px;
+    padding: 1px;
+
+    &.invalid {
+        border: solid 1px;
+        border-color: #FD490D;
+        box-shadow: 0 0 0 1px rgba(#FD490D, 0.25);
+
+        & > input, & > button {
+            color: #FD490D;
+        }
+    }
+
+    &:focus-within:not(.invalid) {
+        border: solid 1px;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 1px rgba(#0d6efd, 0.25);
+    }
+
+    input[type="text"] {
+        flex: 1 1 auto;
+        border: unset;
+
+        &:focus {
+            outline: unset;
+        }
+
+        &:invalid {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+    }
+
+    .input-group-append {
+        background-color: white;
+        border: unset;
+        cursor: pointer;
+
+        &:focus {
+            outline: unset;
+        }
+    }
+}
+
+form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+input[type="text"] {
+    font-style: bold;
+    padding: 10px;
+    width: 50%;
+    margin: auto;
+}
+
+button {
+    /* reset browser style */
+    border: none;
+    background: none;
+
+    /* snip style */
+    font-size: 2em;
+    text-align: center;
+    /* vertical-align: middle; */
+    /* transform: translate(-1.3em); */
+}
+
+.fa-angle-right {
+    line-height: unset;
+    font-style: oblique;
+}
