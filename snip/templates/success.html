@@ -7,16 +7,34 @@
         <title>Snip!</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='success.css') }}">
+        <script src="{{ url_for('static', filename='dist/success.bundle.js') }}"></script>
     </head>
 
     <body>
-        <div class="box box-h grab-h grab-v center">
-            <span>Here's your URL:</span>
-            <a href=" {{ url_for('snip_to', snip=snip) }}">{{ request.url_root }}{{ url_for('snip_to', snip=snip)[1:] }}</a>
+        <div class="snip-grid">
+            <div class="snip-grid-item">
+                <h2><small>☆ Your Snip ☆</small></h2>
+            </div>
+
+            <div class="snip-url">
+                <a href=" {{ url_for('snip_to', snip=snip) }}" target="_blank">
+                    {{ request.url_root }}{{ url_for('snip_to', snip=snip)[1:] }}
+                </a>
+            </div>
+
+            <div class="snip-grid-item">
+                <div id="copied-animation">Copied!</div>
+
+                <span id="copy-url" data-clipboard-text="{{ request.url_root }}{{ url_for('snip_to', snip=snip)[1:] }}">
+                    <i class="fi-page-copy"></i> <span id="copy-text">Copy</span>
+                </span>
+
+                <span id="reload">☂
+                    <span data-tooltip  data-position="bottom" data-alignment="right" tabindex="1" title="Get a new link">Unhappy?</span>
+                </span>
+            </div>
+
         </div>
     </body>
-
-    <script src="{{ url_for('static', filename='dist/snip.bundle.js') }}"></script>
 </html>

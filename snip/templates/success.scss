@@ -1,0 +1,49 @@
+@import 'fonts';
+@import 'settings';
+@import 'foundation';
+@import 'motion-ui';
+
+@include foundation-everything;
+@include motion-ui-transitions;
+@include motion-ui-animations;
+
+.snip-grid {
+    @include xy-grid-container;
+    @include xy-grid('vertical');
+    @include xy-grid-layout(3, 'snip-grid-item', $vertical: true)
+    @include flex-align($y: middle)
+    @include margin($top: 8)
+
+    text-align: center;
+
+    .snip-url {
+        @include xy-cell;
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    #copy-url {
+        font-size: 1.3rem;
+        cursor: pointer;
+    }
+
+    #reload {
+        margin-left: 3rem;
+        font-size: 1.3rem;
+        cursor: pointer;
+
+        .has-tip { // fixes for foundation styling
+            border-bottom: unset;
+            font-weight: unset;
+            cursor: unset;
+        }
+    }
+}
+
+#copied-animation {
+    position: fixed;
+    font-size: 1.3rem;
+    color: $success-color;
+    top: 5rem;
+    display: none;
+}

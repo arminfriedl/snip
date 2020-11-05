@@ -32,11 +32,13 @@ def snip(url: str, reusable=False) -> str:
     db.session.commit()
     return snip
 
+
 def gen_snip():
     """ Generate a random snip """
     rand = secrets.token_bytes(5)
     snip = str(base58.b58encode(rand), 'ascii')
     return snip
+
 
 def unsnip(snip: str):
     snip_dao = Snip.query.filter(Snip.snip == snip).first()

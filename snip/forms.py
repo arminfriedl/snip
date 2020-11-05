@@ -9,5 +9,7 @@ class SnipForm(FlaskForm):
     # The URL validator from wtforms is rather simple and only used as a first
     # line of defense here. The URL is later validated again by urlvalidator.py
     # in snipper.py which can lead to a UrlValidationError.
-    url = StringField('url', validators=[validators.InputRequired(),
-                                         URLValidator(message='Please enter a URL like "https://example.com/example"')])
+    url = StringField('url',
+                      validators=[validators.InputRequired(),
+                                  URLValidator(message='Please enter a URL like "https://example.com/example"')],
+                      render_kw={"placeholder": "https://google.com"})
