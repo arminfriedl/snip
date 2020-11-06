@@ -11,5 +11,7 @@ RUN pipenv install
 ENV FLASK_APP=snip
 ENV FLASK_ENV=production
 
+RUN ["pipenv", "run", "python", "-c", "from snip import db; db.create_all()"]
+
 EXPOSE 5000
 CMD ["pipenv", "run", "flask", "run", "--host=0.0.0.0"]
