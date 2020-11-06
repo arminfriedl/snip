@@ -18,7 +18,7 @@
         "build_scss": "node-sass --include-path node_modules/foundation-sites/scss --include-path node_modules/motion-ui/src -o snip/static snip/templates",
         "build_webpack": "webpack --config webpack.dev.js",
         "watch": "npm-watch",
-        "publish": "node-sass --include-path node_modules/foundation-sites/scss -o snip/static snip/templates && webpack --config webpack.prod.js"
+        "publish": "node-sass --include-path node_modules/foundation-sites/scss --include-path node_modules/motion-ui/src -o snip/static snip/templates && webpack --config webpack.prod.js"
     },
     "repository": {
         "type": "git",

@@ -38,7 +38,7 @@ def snip():
     return {"url": url, "snip": snip}
 
 
-@app.route("/api/unsnip/<snip>", methods=['GET'])
+@app.route("/api/<snip>", methods=['GET'])
 def unsnip(snip):
     url = snipper.unsnip(snip)
     if not url:

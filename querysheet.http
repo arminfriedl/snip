@@ -1,0 +1,11 @@
+:host = http://localhost:5000
+
+# Create a new shortlink
+POST :host/api/snip
+-> jq-set-var :snip .snip 
+{
+  "url": "https://example.com"
+}
+  
+# Unsnip shortlink
+GET :host/api/:snip
