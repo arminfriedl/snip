@@ -518,3 +518,6 @@ fabric.properties
 !.vscode/extensions.json
 *.code-workspace
 
+# ---> Snip
+# Generated from /templates by webpack
+snip/static/*.css
