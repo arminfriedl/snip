@@ -1,53 +1,120 @@
+"""
+Snip Configuration
+==================
+
+Configure snip based on settings found in the environment or environment
+specific config files. The variables are set in the following order (later
+settings override earlier ones):
+- .snipenv
+- .snipenv.[SNIP_STAGE]
+- environment
+- config.py (defaults)
+
+SNIP_STAGE is the only special value. It is taken from definitions in the
+following order (later settings override earlier ones):
+- .snipenv
+- environment
+- parameter in `config.configure`
+
+If no SNIP_STAGE is found in any of them, no stage specific configuration
+(.snipenv.[SNIP_STAGE]) file is taken into account.
+
+All known configuration variables can be found in `SnipConfig`.
+"""
+
 import os
 import logging
+from typing import Literal, Optional
+from pathlib import Path
 
-from . import app
+from pydantic import BaseModel
+from pydantic.types import SecretStr
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
-default_env = "local"
+class SnipConfig(BaseModel):
+    # Database settings
+    SNIP_DATABASE: Literal['sqlite', 'postgres', 'mysql']
+    SNIP_DATABASE_URI: str
+    SNIP_DATABASE_TRACK_MODIFICATION: bool = False
 
-config_vars = [
-    "SQLALCHEMY_DATABASE_URI",
-    "SQLALCHEMY_TRACK_MODIFICATIONS",
-    "SECRET_KEY",
-    "DEBUG",
-    "ENV"
-]
+    # Flask settings
+    SNIP_FLASK_SECRET: SecretStr
+    SNIP_FLASK_ENVIRONMENT: Literal['development', 'production'] = 'production'
+    SNIP_FLASK_DEBUG: bool = False
+    SNIP_FLASK_SKIP_DOTENV: int = 1
 
+    # Snip settings
+    SNIP_STAGE: Optional[str]
 
-def find_env():
-    env = (os.environ.get("SNIP_ENV")
-           or os.environ.get("FLASK_ENV")
-           or default_env)
+def configure(stage: Optional[str] = None) -> SnipConfig:
+    config_dict = {}
 
-    if not env:
-        raise Exception("Could not determine environment")
+    # Read common configuration from .snipenv
+    config_dict.update(read_base_env())
 
-    logger.info(f"Using environment {env}")
+    # bootstrap configuration, try to determine stage first
+    # stage can be set from parameter or environment
+    if not stage:
+        if os.getenv("SNIP_STAGE"):
+            stage = os.getenv("SNIP_STAGE")
+        elif config_dict.get("SNIP_STAGE"):
+            stage = config_dict.get("SNIP_STAGE")
 
+    # Read stage configuration from .snipenv.[stage] if set
+    if stage: config_dict.update(read_stage_env(stage))
+    else: log.debug("Not using stage configuration")
 
-def find_config_file(env):
-    config_file = f"config.{env}.py"
-    logger.info(f"Config file {config_file}")
-    return config_file
+    # Read variables from environment
+    config_dict.update(os.environ)
 
+    return SnipConfig(**config_dict)
 
-def validate(config):
-    key = config.get("SECRET_KEY")
-    if isinstance(key, str):
-        key = key.encode("utf-8")
-    if not isinstance(key, bytes):
-        raise Exception("Secret key cannot be cast to bytes")
-    if len(key) < 64:  # for blake2b hashing in snipper
-        raise Exception("Secret key must be 64 bytes long")
+def read_base_env() -> dict:
+    """ Read base configuration from .snipenv if it exists """
+    base_env_path = Path(".snipenv")
+    log.debug(f"Reading .snipenv file from {base_env_path.resolve()}")
 
-    logger.info("Configuration is valid")
+    try:
+        base_env_dict = read_env(base_env_path)
+        log.info("Setting base config from .snipenv")
+        return base_env_dict
+    except FileNotFoundError:
+        log.debug(".snipenv file not found")
+        return {}
 
+def read_stage_env(stage: str) -> dict:
+    """ Reads the .snipenv file of the current stage """
+    log.info(f"Using stage configuration for {stage}")
+    stage_env_name = ".snipenv."+stage
+    stage_env_path = Path(stage_env_name)
+    log.debug(f"Reading .snipenv file from {stage_env_path.resolve()}")
 
-def configure(env=None):
-    logger.info("Configuring snip")
-    if not env:
-        env = find_env()
-    app.config.from_pyfile(find_config_file(env))
-    validate(app.config)
+    try:
+        stage_env_dict = read_env(stage_env_path)
+        log.info(f"Setting stage config from {stage_env_name}")
+        return stage_env_dict
+    except FileNotFoundError:
+        log.error(f"Could not find stage configuration for {stage_env_name} in {os.path.curdir}")
+        raise
+
+def read_env(env_path: Path) -> dict:
+    """ Read env file from path into dict """
+    if not env_path.exists() or not env_path.is_file():
+        raise FileNotFoundError
+
+    env_dict = dict()
+    with open(env_path) as f:
+        for (idx, line) in enumerate(f):
+            # skip empty lines
+            if not line.strip(): continue
+            # skip comment lines
+            if line.startswith('#'): continue
+
+            try:
+                (k, v) = map(str.strip, line.split('=', maxsplit=1))
+                env_dict[k] = v
+            except:
+                log.error(f"Cannot parse {env_path}:{idx}:{line}")
+                raise
+    return env_dict

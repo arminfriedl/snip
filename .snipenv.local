@@ -1,0 +1,9 @@
+# Database
+SNIP_DATABASE=sqlite
+SNIP_DATABASE_URI=sqlite:////tmp/test.db
+SNIP_DATABASE_TRACK_MODIFICATIONS=False
+
+# Flask
+SNIP_FLASK_SECRET=secret
+SNIP_FLASK_ENVIRONMENT=development
+SNIP_FLASK_DEBUG=True

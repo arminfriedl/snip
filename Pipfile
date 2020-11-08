@@ -14,6 +14,7 @@ flask = "*"
 flask-sqlalchemy = "*"
 base58 = "*"
 flask-wtf = "*"
+pydantic = "*"
 
 [requires]
 python_version = "3.8"
