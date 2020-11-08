@@ -43,6 +43,9 @@ class SnipConfig(BaseModel):
     SNIP_FLASK_ENVIRONMENT: Literal['development', 'production'] = 'production'
     SNIP_FLASK_DEBUG: bool = False
     SNIP_FLASK_SKIP_DOTENV: int = 1
+    # Non-standard flask settings
+    SNIP_FLASK_HOST: str = "localhost"
+    SNIP_FLASK_PORT: int = 5000
 
     # Snip settings
     SNIP_STAGE: Optional[str]
