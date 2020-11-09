@@ -13,7 +13,6 @@ RUN pipenv install gunicorn
 
 ENV SNIP_DATABASE="sqlite"
 ENV SNIP_DATABASE_URI="sqlite:////data/snip.db"
-ENV SNIP_FLASK_HOST="0.0.0.0"
 
 EXPOSE 5000
 CMD ["pipenv", "run", "gunicorn", "-b0.0.0.0:5000", "snip:app"]
