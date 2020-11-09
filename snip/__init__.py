@@ -29,8 +29,9 @@ app.config.update(
     SQLALCHEMY_DATABASE_URI        = snip_config.SNIP_DATABASE_URI,
     SQLALCHEMY_TRACK_MODIFICATIONS = snip_config.SNIP_DATABASE_TRACK_MODIFICATION)
 
+# Needed to set proto and root url in reverse proxy environment
 if snip_config.SNIP_FLASK_PROXYFIX:
-    app = ProxyFix(app)
+    app.wsgi_app = ProxyFix(app.wsgi_app)
 
 ###################
 # Setup SQAlchemy #
