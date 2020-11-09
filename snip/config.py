@@ -47,6 +47,7 @@ class SnipConfig(BaseModel):
     # Non-standard flask settings
     SNIP_FLASK_HOST: str = "localhost"
     SNIP_FLASK_PORT: int = 5000
+    SNIP_FLASK_PROXYFIX: bool = False
 
     # Snip settings
     SNIP_STAGE: Optional[str]

@@ -1,4 +1,4 @@
-from flask import render_template, redirect, session, request
+from flask import render_template, redirect, request
 from werkzeug import exceptions
 
 from . import app

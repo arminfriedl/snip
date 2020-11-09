@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 ###########################
@@ -28,6 +29,8 @@ app.config.update(
     SQLALCHEMY_DATABASE_URI        = snip_config.SNIP_DATABASE_URI,
     SQLALCHEMY_TRACK_MODIFICATIONS = snip_config.SNIP_DATABASE_TRACK_MODIFICATION)
 
+if snip_config.SNIP_FLASK_PROXYFIX:
+    app = ProxyFix(app)
 
 ###################
 # Setup SQAlchemy #
