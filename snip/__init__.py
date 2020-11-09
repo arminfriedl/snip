@@ -24,7 +24,7 @@ os.environ['FLASK_SKIP_DOTENV'] = str(snip_config.SNIP_FLASK_SKIP_DOTENV)
 app = Flask(__name__)
 
 app.config.update(
-    SECRET_KEY                     = snip_config.SNIP_FLASK_SECRET.get_secret_value(),
+    SECRET_KEY                     = snip_config.SNIP_SECRET.get_secret_value(),
     PREFERRED_URL_SCHEME           = snip_config.SNIP_FLASK_PREFERRED_URL_SCHEME,
     SQLALCHEMY_DATABASE_URI        = snip_config.SNIP_DATABASE_URI,
     SQLALCHEMY_TRACK_MODIFICATIONS = snip_config.SNIP_DATABASE_TRACK_MODIFICATION)

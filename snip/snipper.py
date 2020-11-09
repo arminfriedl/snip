@@ -1,3 +1,4 @@
+from . import snip_config
 from . import db
 from .models import Snip
 
@@ -35,13 +36,10 @@ def snip(url: str, reusable=False) -> str:
 
 def gen_snip():
     """ Generate a random snip """
-    rand = secrets.token_bytes(5)
+    rand = secrets.token_bytes(snip_config.SNIP_KEYLEN)
     snip = str(base58.b58encode(rand), 'ascii')
     return snip
 
 
 def unsnip(snip: str):
-    snip_dao = Snip.query.filter(Snip.snip == snip).first()
-    if snip_dao:
-        return snip_dao.url
-    return None
+    return db.session.query(Snip.url).filter_by(snip=snip).scalar()

@@ -39,7 +39,6 @@ class SnipConfig(BaseModel):
     SNIP_DATABASE_TRACK_MODIFICATION: bool = False
 
     # Flask settings
-    SNIP_FLASK_SECRET: SecretStr
     SNIP_FLASK_ENVIRONMENT: Literal['development', 'production'] = 'production'
     SNIP_FLASK_DEBUG: bool = False
     SNIP_FLASK_SKIP_DOTENV: int = 1
@@ -51,6 +50,8 @@ class SnipConfig(BaseModel):
 
     # Snip settings
     SNIP_STAGE: Optional[str]
+    SNIP_SECRET: SecretStr # also used as flask's SECRET_KEY
+    SNIP_KEYLEN: int = 5
 
 def configure(stage: Optional[str] = None) -> SnipConfig:
     config_dict = {}
