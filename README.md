@@ -17,7 +17,7 @@ The simplest way to get started is to run snip from the regularily [published
 docker containers](https://hub.docker.com/repository/docker/arminfriedl/snip).
 
 ```shell
-docker run -p5000 -e"SNIP_SECRET=secretkey" arminfriedl/snip:latest
+docker run -p5000 -e"SNIP_FLASK_SECRET=secretkey" arminfriedl/snip:latest
 ```
 
 Then navigate your browser to http://localhost:5000. Alternatively, you can also
